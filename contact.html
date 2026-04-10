@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | Outage Response</title>
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at top, #1f2937, #020617);
+      --card-bg: rgba(15, 23, 42, 0.9);
+      --accent: #3b82f6;
+      --text-main: #f9fafb;
+      --nav-height: 70px;
+    }
+
+    body {
+      margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg-gradient); background-attachment: fixed; color: var(--text-main);
+      min-height: 100vh; overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-height);
+      padding: 0 40px; display: flex; justify-content: space-between; align-items: center;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 2000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1); background: rgba(2, 6, 23, 0.8);
+    }
+
+    .logo {
+      font-size: 1.5rem; font-weight: 800; letter-spacing: -1px;
+      background: linear-gradient(to right, #fff, var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none;
+    }
+
+    .nav-links { display: flex; align-items: center; }
+    .nav-links a { color: #9ca3af; text-decoration: none; margin-left: 25px; font-size: 0.9rem; transition: color 0.3s; }
+    .menu-toggle { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
+    .bar { width: 25px; height: 3px; background-color: #fff; transition: 0.3s; border-radius: 2px; }
+
+    .form-container { display: flex; justify-content: center; align-items: center; padding: calc(var(--nav-height) + 40px) 20px 40px 20px; }
+    .contact-card { background: var(--card-bg); width: 100%; max-width: 500px; padding: 35px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); }
+    input, textarea { width: 100%; padding: 12px; margin-bottom: 20px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: white; box-sizing: border-box; }
+    .submit-btn { width: 100%; padding: 14px; background: var(--accent); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .menu-toggle { display: flex; }
+      .nav-links {
+        display: flex; flex-direction: column; width: 100%; position: absolute;
+        top: -450px; left: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(25px); padding: 40px 0; text-align: center;
+      }
+      .nav-links.active { top: var(--nav-height); }
+      .nav-links a { margin: 20px 0; font-size: 1.4rem; margin-left: 0; }
+      .menu-toggle.is-active .bar:nth-child(2) { opacity: 0; }
+      .menu-toggle.is-active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+      .menu-toggle.is-active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">OutageResponse</a>
+    <div class="menu-toggle" id="mobile-menu"><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>
+    <div class="nav-links" id="nav-links">
+      <a href="index.html">Home</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="app/index.html">Agency Portal</a>
+      <a href="support.html">Support</a>
+    </div>
+  </nav>
+
+  <div class="form-container">
+    <div class="contact-card">
+      <h2 style="text-align: center; margin-top: 0;">Contact Us</h2>
+      <form action="https://formspree.io/f/xlgovkqp" method="POST">
+        <input type="text" name="name" placeholder="Full Name" required>
+        <input type="email" name="_replyto" placeholder="Work Email" required>
+        <textarea name="message" rows="5" placeholder="How can we help?" required></textarea>
+        <button type="submit" class="submit-btn">Send Message</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const menu = document.querySelector('#mobile-menu');
+    const menuLinks = document.querySelector('#nav-links');
+    menu.addEventListener('click', () => {
+      menu.classList.toggle('is-active');
+      menuLinks.classList.toggle('active');
+    });
+  </script>
+</body>
+</html>
