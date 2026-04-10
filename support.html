@@ -3,20 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Us | Outage Response</title>
+  <title>Support | Outage Response</title>
   <style>
     :root {
       --bg-gradient: radial-gradient(circle at top, #1f2937, #020617);
-      --card-bg: rgba(15, 23, 42, 0.9);
+      --card-bg: rgba(15, 23, 42, 0.8);
       --accent: #3b82f6;
       --text-main: #f9fafb;
+      --text-dim: #9ca3af;
       --nav-height: 70px;
     }
 
     body {
       margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: var(--bg-gradient); background-attachment: fixed; color: var(--text-main);
-      min-height: 100vh; overflow-x: hidden;
+      line-height: 1.6; overflow-x: hidden;
     }
 
     nav {
@@ -33,14 +34,18 @@
     }
 
     .nav-links { display: flex; align-items: center; }
-    .nav-links a { color: #9ca3af; text-decoration: none; margin-left: 25px; font-size: 0.9rem; transition: color 0.3s; }
+    .nav-links a { color: var(--text-dim); text-decoration: none; margin-left: 25px; font-size: 0.9rem; transition: color 0.3s; }
     .menu-toggle { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
     .bar { width: 25px; height: 3px; background-color: #fff; transition: 0.3s; border-radius: 2px; }
 
-    .form-container { display: flex; justify-content: center; align-items: center; padding: calc(var(--nav-height) + 40px) 20px 40px 20px; }
-    .contact-card { background: var(--card-bg); width: 100%; max-width: 500px; padding: 35px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); }
-    input, textarea { width: 100%; padding: 12px; margin-bottom: 20px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: white; box-sizing: border-box; }
-    .submit-btn { width: 100%; padding: 14px; background: var(--accent); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+    .container { max-width: 800px; margin: calc(var(--nav-height) + 60px) auto 60px auto; padding: 0 20px; }
+    h1 { font-size: 2.5rem; text-align: center; margin-bottom: 40px; }
+
+    .faq-card {
+      background: var(--card-bg); border-radius: 16px; padding: 25px; margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px);
+    }
+    .faq-card h3 { color: var(--accent); margin-top: 0; }
 
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
@@ -67,19 +72,22 @@
       <a href="index.html">Home</a>
       <a href="solutions.html">Solutions</a>
       <a href="app/index.html">Agency Portal</a>
-      <a href="support.html">Support</a>
+      <a href="contact.html">Contact</a>
     </div>
   </nav>
 
-  <div class="form-container">
-    <div class="contact-card">
-      <h2 style="text-align: center; margin-top: 0;">Contact Us</h2>
-      <form action="https://formspree.io/f/xlgovkqp" method="POST">
-        <input type="text" name="name" placeholder="Full Name" required>
-        <input type="email" name="_replyto" placeholder="Work Email" required>
-        <textarea name="message" rows="5" placeholder="How can we help?" required></textarea>
-        <button type="submit" class="submit-btn">Send Message</button>
-      </form>
+  <div class="container">
+    <h1>Support Center</h1>
+    <div class="faq-card">
+      <h3>How do I install the app?</h3>
+      <p>Open the Agency Portal on your phone, tap 'Share' or the menu button, and select <strong>"Add to Home Screen."</strong></p>
+    </div>
+    <div class="faq-card">
+      <h3>Does it work offline?</h3>
+      <p>Yes. Once synced, mission-critical data is stored locally on your device for access without a connection.</p>
+    </div>
+    <div style="text-align: center; margin-top: 40px; color: var(--text-dim);">
+      Need more help? <a href="contact.html" style="color: var(--accent); text-decoration: none;">Open a support ticket</a>
     </div>
   </div>
 

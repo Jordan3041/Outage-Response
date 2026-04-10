@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solutions | Outage Response</title>
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at top, #1f2937, #020617);
+      --card-bg: rgba(15, 23, 42, 0.8);
+      --accent: #3b82f6;
+      --text-main: #f9fafb;
+      --text-dim: #9ca3af;
+      --nav-height: 70px;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* --- SHARED NAVBAR STYLES --- */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-height);
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 2000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(2, 6, 23, 0.8);
+    }
+
+    .logo {
+      font-size: 1.5rem; font-weight: 800; letter-spacing: -1px;
+      background: linear-gradient(to right, #fff, var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .nav-links { display: flex; align-items: center; }
+    .nav-links a {
+      color: var(--text-dim); text-decoration: none;
+      margin-left: 25px; font-size: 0.9rem; transition: color 0.3s;
+    }
+    .nav-links a:hover { color: #fff; }
+
+    .menu-toggle { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
+    .bar { width: 25px; height: 3px; background-color: #fff; transition: 0.3s; border-radius: 2px; }
+
+    /* --- PAGE CONTENT --- */
+    .hero {
+      text-align: center;
+      padding: calc(var(--nav-height) + 80px) 20px 40px 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 { font-size: 2.8rem; letter-spacing: -1px; margin-bottom: 10px; }
+
+    .solutions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      padding: 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .sol-card {
+      background: var(--card-bg);
+      padding: 35px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+    }
+
+    .icon-box {
+      width: 50px; height: 50px; background: rgba(59, 130, 246, 0.1);
+      border-radius: 12px; display: flex; justify-content: center;
+      align-items: center; margin-bottom: 20px; color: var(--accent); font-size: 1.5rem;
+    }
+
+    .feature-list { list-style: none; padding: 0; margin: 0; }
+    .feature-list li {
+      margin-bottom: 10px; padding-left: 25px; position: relative;
+      font-size: 0.9rem; color: #cbd5e1;
+    }
+    .feature-list li::before {
+      content: '✓'; position: absolute; left: 0;
+      color: var(--accent); font-weight: bold;
+    }
+
+    /* --- MOBILE REPSONSIVENESS --- */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .menu-toggle { display: flex; }
+      .nav-links {
+        display: flex; flex-direction: column; width: 100%;
+        position: absolute; top: -450px; left: 0;
+        transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(25px);
+        padding: 40px 0; text-align: center;
+      }
+      .nav-links.active { top: var(--nav-height); }
+      .nav-links a { margin: 20px 0; font-size: 1.4rem; margin-left: 0; }
+      .menu-toggle.is-active .bar:nth-child(2) { opacity: 0; }
+      .menu-toggle.is-active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+      .menu-toggle.is-active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+      .hero h1 { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">OutageResponse</a>
+    <div class="menu-toggle" id="mobile-menu"><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>
+    <div class="nav-links" id="nav-links">
+      <a href="index.html">Home</a>
+      <a href="app/index.html">Agency Portal</a>
+      <a href="support.html">Support</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <h1>Dispatch Redundancy Reimagined</h1>
+    <p style="color: var(--text-dim)">Ensuring that when the primary CAD goes down, your response doesn't skip a beat.</p>
+  </div>
+
+  <div class="solutions-grid">
+    <div class="sol-card">
+      <div class="icon-box">⚡</div>
+      <h2>For Dispatchers</h2>
+      <ul class="feature-list">
+        <li>Sub-second determinant lookups</li>
+        <li>Color-coded agency jurisdictions</li>
+        <li>Keyboard-centric search for speed</li>
+      </ul>
+    </div>
+    <div class="sol-card">
+      <div class="icon-box">🛡️</div>
+      <h2>For IT Directors</h2>
+      <ul class="feature-list">
+        <li>PWA technology (No App Store)</li>
+        <li>Encrypted Local Storage</li>
+        <li>Zero server maintenance</li>
+      </ul>
+    </div>
+    <div class="sol-card">
+      <div class="icon-box">📊</div>
+      <h2>For Leadership</h2>
+      <ul class="feature-list">
+        <li>Multi-tenant agency isolation</li>
+        <li>Standardized response logic</li>
+        <li>Instant deployment to all staff</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    const menu = document.querySelector('#mobile-menu');
+    const menuLinks = document.querySelector('#nav-links');
+    menu.addEventListener('click', () => {
+      menu.classList.toggle('is-active');
+      menuLinks.classList.toggle('active');
+    });
+  </script>
+</body>
+</html>

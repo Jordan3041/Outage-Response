@@ -2,132 +2,266 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Outage Response</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <title>Outage Response | Mission Critical Dispatch Solutions</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, Helvetica, sans-serif;
+    :root {
+      --bg-gradient: radial-gradient(circle at top, #1f2937, #020617);
+      --card-bg: rgba(15, 23, 42, 0.8);
+      --accent: #3b82f6;
+      --text-main: #f9fafb;
+      --text-dim: #9ca3af;
+      --nav-height: 70px;
     }
 
     body {
-      background: linear-gradient(135deg, #0b1e3d, #1f4e79);
-      color: white;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden; /* Prevents side-scrolling on mobile */
     }
 
-    /* Navbar */
-    .navbar {
-      width: 100%;
-      padding: 20px 40px;
-      display: flex;
-      justify-content: flex-end;
-      position: absolute;
+    /* --- FIXED NAVBAR --- */
+    nav {
+      position: fixed;
       top: 0;
       left: 0;
+      right: 0;
+      height: var(--nav-height);
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 2000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(2, 6, 23, 0.8);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(to right, #fff, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    /* --- DESKTOP NAV --- */
+    .nav-links {
+      display: flex;
+      align-items: center;
     }
 
     .nav-links a {
-      color: white;
+      color: var(--text-dim);
       text-decoration: none;
       margin-left: 25px;
-      font-size: 16px;
-      transition: 0.3s;
+      font-size: 0.9rem;
+      transition: color 0.3s;
     }
 
-    .nav-links a:hover {
-      color: #ff4d4d;
-    }
+    .nav-links a:hover { color: #fff; }
 
-    /* Center Content */
-    .container {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
+    /* --- HAMBURGER MENU --- */
+    .menu-toggle {
+      display: none;
       flex-direction: column;
-      padding: 20px;
+      cursor: pointer;
+      gap: 5px;
+    }
+
+    .bar {
+      width: 25px;
+      height: 3px;
+      background-color: #fff;
+      transition: all 0.3s ease;
+      border-radius: 2px;
+    }
+
+    /* --- HERO SECTION --- */
+    header {
+      text-align: center;
+      padding: calc(var(--nav-height) + 80px) 20px 80px 20px;
+      max-width: 900px;
+      margin: 0 auto;
     }
 
     h1 {
-      font-size: 48px;
-      margin-bottom: 10px;
-      letter-spacing: 2px;
-    }
-
-    h2 {
-      font-size: 24px;
-      font-weight: normal;
+      font-size: 3.5rem;
       margin-bottom: 20px;
-      color: #ff4d4d;
+      line-height: 1.1;
+      letter-spacing: -2px;
     }
 
-    p {
-      max-width: 500px;
-      font-size: 16px;
-      line-height: 1.5;
-      opacity: 0.9;
+    header p {
+      font-size: 1.2rem;
+      color: var(--text-dim);
+      margin-bottom: 40px;
     }
 
-    /* Footer */
-    .footer {
-      text-align: center;
-      padding: 15px;
-      font-size: 14px;
-      opacity: 0.7;
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
     }
 
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 32px;
+    .primary-btn {
+      padding: 15px 35px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+      box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+      transition: 0.2s;
+    }
+
+    .secondary-btn {
+      padding: 15px 35px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* --- FEATURES --- */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 60px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feat-card {
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+    }
+
+    .feat-card h3 { color: var(--accent); margin-top: 0; }
+
+    /* --- MOBILE STYLES --- */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      
+      .menu-toggle { display: flex; }
+
+      /* The Navigation Drawer */
+      .nav-links {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: -450px; /* Hide above screen */
+        left: 0;
+        transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: rgba(2, 6, 23, 0.98);
+        backdrop-filter: blur(25px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 40px 0;
+        text-align: center;
+        z-index: 1999;
       }
 
-      h2 {
-        font-size: 18px;
+      .nav-links.active {
+        top: var(--nav-height); /* Slide into view */
       }
 
       .nav-links a {
-        margin-left: 15px;
-        font-size: 14px;
+        margin: 20px 0;
+        font-size: 1.4rem;
+        margin-left: 0;
+        display: block;
       }
+
+      /* Hamburger to X Animation */
+      .menu-toggle.is-active .bar:nth-child(2) { opacity: 0; }
+      .menu-toggle.is-active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+      .menu-toggle.is-active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+      h1 { font-size: 2.5rem; }
+      header { padding-top: calc(var(--nav-height) + 40px); }
+      .btn-group { flex-direction: column; }
     }
   </style>
 </head>
-
 <body>
 
-  <!-- Navbar -->
-  <div class="navbar">
-    <div class="nav-links">
-      <a href="https://outageresponse.com/">Home</a>
-      <a href="Response Plan Search/index.html">Response Plan Search</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact Us</a>
+  <nav>
+    <a href="index.html" class="logo">OutageResponse</a>
+    
+    <div class="menu-toggle" id="mobile-menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
     </div>
-  </div>
 
-  <!-- Main Content -->
-  <div class="container">
-    <h1>Outage Response</h1>
-    <h2>Coming Soon</h2>
-    <p>
-      We're building a powerful platform to help 911 centers quickly access response plans
-      and send critical notifications during system outages.
-      <br><br>
-      Stay tuned — something great is on the way.
-    </p>
-  </div>
+    <div class="nav-links" id="nav-links">
+      <a href="solutions.html">Solutions</a>
+      <a href="app/index.html">Agency Portal</a>
+      <a href="support.html">Support</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
 
-  <!-- Footer -->
-  <div class="footer">
-    © 2026 Outage Response. All rights reserved.
-  </div>
+  <header>
+    <h1>The Gold Standard in Emergency Dispatch Logic</h1>
+    <p>Empowering 911 dispatchers with sub-second resource plan lookups. Built for reliability. Designed for the field.</p>
+    <div class="btn-group">
+      <a href="app/index.html" class="primary-btn">Agency Portal</a>
+      <a href="solutions.html" class="secondary-btn">Learn More</a>
+    </div>
+  </header>
+
+  <section class="features">
+    <div class="feat-card">
+      <h3>Multi-Tenant Architecture</h3>
+      <p>Secure, isolated data environments for every agency. Custom colors and response logic per jurisdiction.</p>
+    </div>
+    <div class="feat-card">
+      <h3>Offline-First PWA</h3>
+      <p>Zero bars? No problem. Our platform caches mission-critical data locally, ensuring dispatchers are never without a plan.</p>
+    </div>
+    <div class="feat-card">
+      <h3>Instant Search</h3>
+      <p>Optimized determinant lookup with autocomplete. Find exact response requirements in less than 200ms.</p>
+    </div>
+  </section>
+
+  <footer style="text-align: center; padding: 60px 40px; color: #4b5563; font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05);">
+    &copy; 2026 Outage Response. All rights reserved.<br>Built for the heroes behind the headset.
+  </footer>
+
+  <script>
+    const menu = document.querySelector('#mobile-menu');
+    const menuLinks = document.querySelector('#nav-links');
+
+    menu.addEventListener('click', function() {
+      menu.classList.toggle('is-active');
+      menuLinks.classList.toggle('active');
+    });
+
+    // Close menu when a link is clicked
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        menu.classList.remove('is-active');
+        menuLinks.classList.remove('active');
+      });
+    });
+  </script>
 
 </body>
 </html>
