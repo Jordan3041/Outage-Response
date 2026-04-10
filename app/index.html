@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Outage Response | Agency Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1f2937">
+</head>
+<body>
+
+  <nav class="app-nav">
+    <div class="logo">OutageResponse</div>
+    <a href="https://outageresponse.com" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6"/>
+      </svg>
+      Back to Website
+    </a>
+  </nav>
+
+  <div class="app-shell">
+    
+    <div id="login-section" class="card">
+      <h1>Agency Access</h1>
+      <p style="text-align: center; color: #9ca3af; font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">
+        Enter your agency key to sync response plans.
+      </p>
+      
+      <input type="text" id="agency-key" placeholder="Enter Agency Key" autocomplete="off">
+      <button class="primary-btn" id="login-btn">Sync Agency Data</button>
+      
+      <div style="margin-top: 20px; font-size: 0.75rem; color: #4b5563; text-align: center;">
+        Secure Offline-First Environment
+      </div>
+    </div>
+
+    <div id="app-section" style="display:none;">
+      <div class="card">
+        <h1 id="agency-name-display">Dispatch Portal</h1>
+        
+        <div class="search-wrapper">
+          <input type="text" id="search-input" placeholder="Search Code (e.g. 10A01)" autocomplete="off">
+          <div id="autocomplete-list" class="autocomplete-container"></div>
+        </div>
+
+        <div id="active-result"></div>
+        
+        <span class="logout-text" onclick="logout()">Logout Agency</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
