@@ -1,0 +1,261 @@
+/* --- CSS VARIABLES --- */
+:root {
+  --bg-gradient: radial-gradient(circle at top, #1f2937, #020617);
+  --card-bg: rgba(15, 23, 42, 0.9);
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --text-main: #f9fafb;
+  --text-dim: #9ca3af;
+  --input-bg: #0f172a;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --nav-height: 60px;
+}
+
+/* --- BASE STYLES --- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text-main);
+  min-height: 100vh;
+  /* Standard flow for mobile reliability */
+  display: block; 
+}
+
+/* --- FIXED NAVIGATION --- */
+nav.app-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 25px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  z-index: 2000;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: -0.5px;
+  background: linear-gradient(to right, #fff, var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-decoration: none;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: #fff;
+}
+
+/* --- LAYOUT SHELL --- */
+.app-shell {
+  width: 100%;
+  max-width: 520px;
+  margin: calc(var(--nav-height) + 30px) auto 40px auto;
+  padding: 0 20px;
+}
+
+/* --- COMPONENT: CARDS --- */
+.card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid var(--border-color);
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 1.4rem;
+  margin: 0 0 20px 0;
+  text-align: center;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+/* --- FORMS & INPUTS --- */
+input {
+  width: 100%;
+  padding: 14px;
+  background: var(--input-bg);
+  border: 1px solid #334155;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  outline: none;
+  transition: all 0.2s ease;
+  -webkit-appearance: none; /* Fixes iOS shadow/border issues */
+}
+
+input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.primary-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--accent);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.primary-btn:hover {
+  background: var(--accent-hover);
+}
+
+/* --- AUTOCOMPLETE DROPDOWN --- */
+.search-wrapper {
+  position: relative;
+}
+
+.autocomplete-container {
+  position: absolute;
+  top: 55px;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #1e293b;
+  border-radius: 10px;
+  border: 1px solid #334155;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.autocomplete-item {
+  padding: 12px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
+.autocomplete-item:hover, .autocomplete-active {
+  background: #334155;
+  color: #fff;
+}
+
+.autocomplete-item strong {
+  color: var(--accent);
+}
+
+/* --- RESULT DISPLAY --- */
+.result-item {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 20px;
+  border-radius: 14px;
+  margin-top: 20px;
+  border-top: 3px solid var(--accent);
+  animation: slideUp 0.3s ease-out;
+}
+
+.level-badge {
+  font-size: 0.7rem;
+  background: #374151;
+  padding: 3px 8px;
+  border-radius: 5px;
+  color: var(--text-dim);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.determinant-title {
+  font-weight: 700;
+  margin: 10px 0;
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.agency-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 10px;
+}
+
+.agency-row:last-child { border-bottom: none; }
+
+.agency-row strong {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.agency-row span {
+  font-size: 0.9rem;
+  text-align: right;
+  color: #e5e7eb;
+}
+
+/* --- UTILS --- */
+.logout-text {
+  display: block;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 25px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- MOBILE OPTIMIZATION --- */
+@media (max-width: 600px) {
+  nav.app-nav { padding: 0 15px; }
+  
+  .app-shell { 
+    margin-top: calc(var(--nav-height) + 15px); 
+  }
+  
+  .card { padding: 20px; }
+  
+  .agency-row {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .agency-row span {
+    text-align: left;
+    width: 100%;
+  }
+}
