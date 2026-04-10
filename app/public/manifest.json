@@ -1,1 +1,16 @@
-
+{
+    "short_name": "FirePlan",
+    "name": "Fire Department Response Plans",
+    "icons": [
+      {
+        "src": "icons/icon-192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      }
+    ],
+    "start_url": "/index.html",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#D32F2F"
+  }
