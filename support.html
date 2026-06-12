@@ -6,60 +6,247 @@
   <title>Support | Outage Response</title>
   <style>
     :root {
+      /* Brand colors matching index.html */
       --bg-gradient: radial-gradient(circle at top, #1f2937, #020617);
       --card-bg: rgba(15, 23, 42, 0.8);
       --accent: #3b82f6;
       --text-main: #f9fafb;
       --text-dim: #9ca3af;
       --nav-height: 70px;
+      
+      /* Status Colors */
+      --status-green: #10b981;
     }
 
     body {
-      margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg-gradient); background-attachment: fixed; color: var(--text-main);
-      line-height: 1.6; overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
     }
 
+    /* --- FIXED NAVBAR --- */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-height);
-      padding: 0 40px; display: flex; justify-content: space-between; align-items: center;
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 2000;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1); background: rgba(2, 6, 23, 0.8);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-height);
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 2000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(2, 6, 23, 0.8);
     }
 
     .logo {
-      font-size: 1.5rem; font-weight: 800; letter-spacing: -1px;
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -1px;
       background: linear-gradient(to right, #fff, var(--accent));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
     }
 
-    .nav-links { display: flex; align-items: center; }
-    .nav-links a { color: var(--text-dim); text-decoration: none; margin-left: 25px; font-size: 0.9rem; transition: color 0.3s; }
-    .menu-toggle { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
-    .bar { width: 25px; height: 3px; background-color: #fff; transition: 0.3s; border-radius: 2px; }
+    /* --- DESKTOP NAV --- */
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
 
-    .container { max-width: 800px; margin: calc(var(--nav-height) + 60px) auto 60px auto; padding: 0 20px; }
-    h1 { font-size: 2.5rem; text-align: center; margin-bottom: 40px; }
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      margin-left: 25px;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
 
+    .nav-links a:hover { color: #fff; }
+
+    /* --- HAMBURGER MENU --- */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+
+    .bar {
+      width: 25px;
+      height: 3px;
+      background-color: #fff;
+      transition: all 0.3s ease;
+      border-radius: 2px;
+    }
+
+    /* --- PAGE CONTENT --- */
+    .container { 
+      max-width: 800px; 
+      margin: calc(var(--nav-height) + 60px) auto 60px auto; 
+      padding: 0 20px; 
+    }
+    
+    .header-section { 
+      text-align: center; 
+      margin-bottom: 40px; 
+    }
+
+    h1 { 
+      font-size: 3rem; 
+      margin-bottom: 15px; 
+      letter-spacing: -1px; 
+    }
+
+    /* System Status Indicator */
+    .status-badge {
+      display: inline-flex; 
+      align-items: center; 
+      gap: 8px; 
+      background: rgba(16, 185, 129, 0.1); 
+      border: 1px solid rgba(16, 185, 129, 0.3); 
+      padding: 6px 14px; 
+      border-radius: 20px; 
+      font-size: 0.85rem; 
+      color: var(--status-green);
+      font-weight: 500; 
+      margin-bottom: 15px;
+    }
+
+    .status-dot {
+      width: 8px; 
+      height: 8px; 
+      background: var(--status-green); 
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--status-green);
+      position: relative;
+    }
+
+    .status-dot::after {
+      content: ''; 
+      position: absolute; 
+      width: 100%; 
+      height: 100%;
+      background-color: var(--status-green); 
+      border-radius: 50%;
+      animation: pulseGreen 2s infinite; 
+      top: 0; 
+      left: 0; 
+      opacity: 0.4;
+    }
+
+    @keyframes pulseGreen {
+      0% { transform: scale(1); opacity: 0.4; }
+      70% { transform: scale(2.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 0; }
+    }
+
+    /* FAQ Cards matching features cards */
     .faq-card {
-      background: var(--card-bg); border-radius: 16px; padding: 25px; margin-bottom: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px);
+      background: var(--card-bg); 
+      padding: 30px; 
+      border-radius: 20px; 
+      margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08); 
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
-    .faq-card h3 { color: var(--accent); margin-top: 0; }
 
+    .faq-card h3 { 
+      color: var(--accent); 
+      margin-top: 0; 
+      font-size: 1.2rem; 
+      margin-bottom: 12px; 
+    }
+
+    .faq-card p { 
+      margin: 0; 
+      color: var(--text-dim); 
+    }
+
+    .faq-card ul { 
+      margin: 10px 0 0 0; 
+      padding-left: 20px; 
+      color: var(--text-dim); 
+    }
+
+    .faq-card li { 
+      margin-bottom: 8px; 
+    }
+
+    .faq-card strong {
+      color: var(--text-main);
+    }
+
+    .support-footer { 
+      text-align: center; 
+      margin-top: 40px; 
+      color: var(--text-dim); 
+    }
+
+    .support-btn {
+      display: inline-block; 
+      background: var(--accent); 
+      color: #fff; 
+      text-decoration: none; 
+      padding: 15px 35px; 
+      border-radius: 10px; 
+      font-weight: 600; 
+      margin-top: 15px; 
+      transition: 0.2s;
+      box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+    }
+
+    .support-btn:hover { 
+      opacity: 0.9; 
+      transform: translateY(-1px); 
+    }
+
+    /* --- MOBILE STYLES --- */
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
+      
       .menu-toggle { display: flex; }
+
       .nav-links {
-        display: flex; flex-direction: column; width: 100%; position: absolute;
-        top: -450px; left: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(25px); padding: 40px 0; text-align: center;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: -450px;
+        left: 0;
+        transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: rgba(2, 6, 23, 0.98);
+        backdrop-filter: blur(25px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 40px 0;
+        text-align: center;
+        z-index: 1999;
       }
+
       .nav-links.active { top: var(--nav-height); }
-      .nav-links a { margin: 20px 0; font-size: 1.4rem; margin-left: 0; }
+
+      .nav-links a {
+        margin: 20px 0;
+        font-size: 1.4rem;
+        margin-left: 0;
+        display: block;
+      }
+
       .menu-toggle.is-active .bar:nth-child(2) { opacity: 0; }
       .menu-toggle.is-active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
       .menu-toggle.is-active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+      
+      h1 { font-size: 2.2rem; }
     }
   </style>
 </head>
@@ -67,40 +254,84 @@
 
   <nav>
     <a href="index.html" class="logo">OutageResponse</a>
-    <div class="menu-toggle" id="mobile-menu"><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>
+    
+    <div class="menu-toggle" id="mobile-menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
+
     <div class="nav-links" id="nav-links">
-      <a href="index.html">Home</a>
       <a href="solutions.html">Solutions</a>
       <a href="app/index.html">Agency Portal</a>
+      <a href="support.html">Support</a>
       <a href="contact.html">Contact</a>
     </div>
   </nav>
 
   <div class="container">
-    <h1>Support Center</h1>
-      <div class="faq-card">
-      <h3>Do we need to install anything?</h3>
-      <p>No! There is no infastructure required. Just navigate to the web app and add it to your devices home screen for offline use.</p>
+    <div class="header-section">
+      <div class="status-badge">
+        <span class="status-dot"></span> All Systems Operational
+      </div>
+      <h1>Support Center</h1>
     </div>
+
+    <div class="faq-card">
+      <h3>Do we need to install anything?</h3>
+      <p>No. There is no server infrastructure required on your agency's end. Simply access the web app via your browser and add it to your device's home screen for offline use.</p>
+    </div>
+
     <div class="faq-card">
       <h3>How do I install the app?</h3>
-      <p>Open the Agency Portal on your phone, tap 'Share' or the menu button, and select <strong>"Add to Home Screen."</strong></p>
+      <p>Open the Agency Portal in your device's web browser and follow these steps based on your operating system:</p>
+      <ul>
+        <li><strong>iOS (Safari):</strong> Tap the <strong>Share</strong> icon (square with an up arrow) and select <strong>"Add to Home Screen."</strong></li>
+        <li><strong>Android (Chrome):</strong> Tap the <strong>three dots</strong> menu icon in the top right corner and select <strong>"Install app"</strong> or <strong>"Add to Home Screen."</strong></li>
+      </ul>
     </div>
+
     <div class="faq-card">
       <h3>Does it work offline?</h3>
-      <p>Yes. Once synced, mission-critical data is stored locally on your device for access without a connection.</p>
+      <p>Yes. Once your agency data is synced online, mission-critical response plans, lookup tools, and local configurations are stored directly on your hardware to remain fully operational during a total backhaul network failure.</p>
     </div>
-    <div style="text-align: center; margin-top: 40px; color: var(--text-dim);">
-      Need more help? <a href="contact.html" style="color: var(--accent); text-decoration: none;">Open a support ticket</a>
+
+    <div class="faq-card">
+      <h3>How do we sync the latest dispatch data?</h3>
+      <p>The app automatically detects network connectivity and triggers a background sync when online. You can also force a manual update at any time by tapping the sync indicator inside the Agency Portal dashboard.</p>
+    </div>
+
+    <div class="faq-card">
+      <h3>What happens if I clear my browser storage?</h3>
+      <p>Clearing your browser's application cache or local storage will remove the offline database from that specific device. If this happens, simply open the app while connected to the internet to run an initial synchronization before field use.</p>
+    </div>
+
+    <div class="faq-card">
+      <h3>Is our agency's data secure?</h3>
+      <p>Absolutely. All data moving between your local environment and our infrastructure is secured using SSL encryption. Locally stored offline databases are sandboxed within the device's secure browser instance, preventing unauthorized access from other applications.</p>
+    </div>
+
+    <div class="support-footer">
+      <p>Can't find what you need? Reach out directly to our technical team.</p>
+      <a href="contact.html" class="support-btn">Open a Support Ticket</a>
     </div>
   </div>
 
   <script>
     const menu = document.querySelector('#mobile-menu');
     const menuLinks = document.querySelector('#nav-links');
-    menu.addEventListener('click', () => {
+
+    menu.addEventListener('click', function() {
       menu.classList.toggle('is-active');
       menuLinks.classList.toggle('active');
+    });
+
+    // Close menu when a link is clicked (useful for mobile)
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        menu.classList.remove('is-active');
+        menuLinks.classList.remove('active');
+      });
     });
   </script>
 </body>

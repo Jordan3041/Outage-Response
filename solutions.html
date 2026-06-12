@@ -9,9 +9,11 @@
       --bg-gradient: radial-gradient(circle at top, #1f2937, #020617);
       --card-bg: rgba(15, 23, 42, 0.8);
       --accent: #3b82f6;
+      --accent-dim: rgba(59, 130, 246, 0.1);
       --text-main: #f9fafb;
       --text-dim: #9ca3af;
       --nav-height: 70px;
+      --border-color: rgba(255, 255, 255, 0.08);
     }
 
     body {
@@ -66,12 +68,20 @@
     }
 
     .hero h1 { font-size: 2.8rem; letter-spacing: -1px; margin-bottom: 10px; }
+    
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-top: 80px;
+      margin-bottom: 40px;
+      letter-spacing: -0.5px;
+    }
 
     .solutions-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 30px;
-      padding: 40px;
+      padding: 20px 40px;
       max-width: 1100px;
       margin: 0 auto;
     }
@@ -80,12 +90,12 @@
       background: var(--card-bg);
       padding: 35px;
       border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-color);
       backdrop-filter: blur(10px);
     }
 
     .icon-box {
-      width: 50px; height: 50px; background: rgba(59, 130, 246, 0.1);
+      width: 50px; height: 50px; background: var(--accent-dim);
       border-radius: 12px; display: flex; justify-content: center;
       align-items: center; margin-bottom: 20px; color: var(--accent); font-size: 1.5rem;
     }
@@ -100,7 +110,150 @@
       color: var(--accent); font-weight: bold;
     }
 
-    /* --- MOBILE REPSONSIVENESS --- */
+    /* --- SECTION: HOW IT WORKS (TIMELINE) --- */
+    .timeline {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0; left: 50%;
+      width: 2px;
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(-50%);
+    }
+    .timeline-item {
+      margin-bottom: 40px;
+      position: relative;
+      width: 50%;
+    }
+    .timeline-item:nth-child(odd) { left: 0; padding-right: 40px; box-sizing: border-box; }
+    .timeline-item:nth-child(even) { left: 50%; padding-left: 40px; box-sizing: border-box; }
+    .timeline-dot {
+      width: 16px; height: 16px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: absolute;
+      top: 25px;
+      z-index: 10;
+      box-shadow: 0 0 10px var(--accent);
+    }
+    .timeline-item:nth-child(odd) .timeline-dot { right: -8px; }
+    .timeline-item:nth-child(even) .timeline-dot { left: -8px; }
+    .timeline-content {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 25px;
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+    }
+    .timeline-content h3 { margin-top: 0; color: var(--accent); font-size: 1.2rem; }
+    .timeline-content p { margin-bottom: 0; font-size: 0.9rem; color: #cbd5e1; }
+
+    /* --- SECTION: SCENARIO MATRIX (TABLE) --- */
+    .matrix-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+    th, td {
+      padding: 18px 24px;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    th {
+      background: rgba(15, 23, 42, 0.9);
+      color: #fff;
+      font-weight: 600;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    }
+    td { border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    tr:last-child td { border-bottom: none; }
+    .text-danger { color: #f87171; }
+    .text-success { color: #4ade80; font-weight: 500; }
+
+    /* --- SECTION: TECHNICAL SPECS (BADGES) --- */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 0 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .spec-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .spec-card h4 { margin: 0 0 8px 0; color: #fff; font-size: 1rem; }
+    .spec-card p { margin: 0; font-size: 0.85rem; color: var(--text-dim); }
+
+    /* --- SECTION: FAQ ACCORDION --- */
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto 100px auto;
+      padding: 0 40px;
+    }
+    .faq-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+    .faq-trigger {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 20px;
+      text-align: left;
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-trigger::after {
+      content: '+';
+      font-size: 1.4rem;
+      color: var(--accent);
+      transition: transform 0.3s;
+    }
+    .faq-item.active .faq-trigger::after {
+      transform: rotate(45deg);
+    }
+    .faq-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      background: rgba(0, 0, 0, 0.1);
+    }
+    .faq-content p {
+      padding: 0 20px 20px 20px;
+      margin: 0;
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* --- MOBILE RESPONSIVENESS --- */
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
       .menu-toggle { display: flex; }
@@ -116,7 +269,14 @@
       .menu-toggle.is-active .bar:nth-child(2) { opacity: 0; }
       .menu-toggle.is-active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
       .menu-toggle.is-active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+      
       .hero h1 { font-size: 2.2rem; }
+      .solutions-grid, .matrix-container, .specs-grid, .faq-container { padding: 0 20px; }
+
+      /* Timeline Mobile */
+      .timeline::before { left: 20px; }
+      .timeline-item { width: 100%; left: 0 !important; padding-left: 40px !important; padding-right: 0 !important; }
+      .timeline-dot { left: 12px !important; right: auto !important; }
     }
   </style>
 </head>
@@ -168,12 +328,141 @@
     </div>
   </div>
 
+  <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.05); max-width: 1100px; margin: 60px auto;">
+
+  <h2 class="section-title">How It Works</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <h3>1. Primary CAD Failure</h3>
+        <p>Your primary Computer-Aided Dispatch system experiences unexpected downtime or loss of connectivity.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <h3>2. Instant PWA Activation</h3>
+        <p>Dispatchers open the OutageResponse Web App on any device. It boots instantly, reading secure data directly from local storage.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <h3>3. Continuous Operations</h3>
+        <p>Personnel handle determinant calculations, coordinate mutual aid cross-references, and track jurisdictions seamlessly without paper maps.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <h3>4. Primary System Restored</h3>
+        <p>Once your network or primary software architecture stabilizes, telemetry data reconciles back without a breakdown in service delivery.</p>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Operational Impact</h2>
+  <div class="matrix-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Operational Challenge</th>
+          <th>Traditional Failbacks</th>
+          <th>With OutageResponse</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Primary CAD Outage Drop</strong></td>
+          <td class="text-danger">Chaos, physical binders, and lookup lag.</td>
+          <td class="text-success">Instant transition, keyboard-driven search flow.</td>
+        </tr>
+        <tr>
+          <td><strong>Cross-Jurisdiction Clarity</strong></td>
+          <td class="text-danger">Flipping through paper maps for borders.</td>
+          <td class="text-success">Color-coded agency logic instantly applied.</td>
+        </tr>
+        <tr>
+          <td><strong>Data Security</strong></td>
+          <td class="text-danger">Unencrypted fallback spreadsheets on flash drives.</td>
+          <td class="text-success">Isolated browser sandbox with local encryption.</td>
+        </tr>
+        <tr>
+          <td><strong>Updating Run Cards</strong></td>
+          <td class="text-danger">Reprinting paper binders across every console.</td>
+          <td class="text-success">Zero deployment updates instantly applied globally.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="section-title">Architecture & Compliance</h2>
+  <div class="specs-grid">
+    <div class="spec-card">
+      <h4>Data Protection</h4>
+      <p>AES-256 local encrypted sandbox storage</p>
+    </div>
+    <div class="spec-card">
+      <h4>Network Design</h4>
+      <p>True offline PWA functionality</p>
+    </div>
+    <div class="spec-card">
+      <h4>Compliance Ready</h4>
+      <p>Engineered for high-security environments</p>
+    </div>
+    <div class="spec-card">
+      <h4>Universal Support</h4>
+      <p>Compatible with iOS, Android, macOS, & Windows</p>
+    </div>
+  </div>
+
+  <h2 class="section-title">Frequently Asked Questions</h2>
+  <div class="faq-container">
+    <div class="faq-item">
+      <button class="faq-trigger">Does this software require an active internet connection?</button>
+      <div class="faq-content">
+        <p>No. By implementing advanced Progressive Web App (PWA) configurations, the underlying application and database logic cache locally on your terminals. It is engineered to perform reliably when total network backhaul is compromised.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-trigger">How is our unique data kept safe on consumer browsers?</button>
+      <div class="faq-content">
+        <p>Data isolation is preserved via strict multi-tenant architecture. Cryptographic safeguards secure localized indexes directly inside specific browser sandboxes, preventing cross-contamination or peripheral access from other desktop environments.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-trigger">What is involved in setting up our agency's rules?</button>
+      <div class="faq-content">
+        <p>Your agency configurations, determinant lists, and border rules are easily uploaded through our administrative portal. Once configured, adjustments propagate silently to all designated personnel next time their devices connect online.</p>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // Mobile Responsive Menu Toggle
     const menu = document.querySelector('#mobile-menu');
     const menuLinks = document.querySelector('#nav-links');
     menu.addEventListener('click', () => {
       menu.classList.toggle('is-active');
       menuLinks.classList.toggle('active');
+    });
+
+    // Accordion Logic for FAQs
+    const faqTriggers = document.querySelectorAll('.faq-trigger');
+    faqTriggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const parent = trigger.parentElement;
+        const content = trigger.nextElementSibling;
+        
+        parent.classList.toggle('active');
+        
+        if (parent.classList.contains('active')) {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } else {
+          content.style.maxHeight = "0px";
+        }
+      });
     });
   </script>
 </body>

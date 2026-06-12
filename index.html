@@ -12,6 +12,10 @@
       --text-main: #f9fafb;
       --text-dim: #9ca3af;
       --nav-height: 70px;
+      
+      /* Status Colors */
+      --status-green: #10b981;
+      --status-red: #ef4444;
     }
 
     body {
@@ -88,7 +92,7 @@
     /* --- HERO SECTION --- */
     header {
       text-align: center;
-      padding: calc(var(--nav-height) + 80px) 20px 80px 20px;
+      padding: calc(var(--nav-height) + 60px) 20px 40px 20px;
       max-width: 900px;
       margin: 0 auto;
     }
@@ -131,17 +135,195 @@
       border-radius: 10px;
       font-weight: 600;
       border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s;
     }
 
-    /* --- FEATURES --- */
-    .features {
+    .secondary-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--accent);
+    }
+
+    /* --- LIVE SYSTEM STATUS BAR --- */
+    .status-container {
+      max-width: 800px;
+      margin: 0 auto 20px auto;
+      padding: 15px 25px;
+      background: rgba(15, 23, 42, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      transition: border 0.3s;
+    }
+
+    .status-container.offline-active {
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-dim);
+    }
+
+    .status-item strong {
+      color: var(--text-main);
+      transition: color 0.3s;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .status-dot.online {
+      background-color: var(--status-green);
+      box-shadow: 0 0 8px var(--status-green);
+    }
+
+    .status-dot.online::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--status-green);
+      border-radius: 50%;
+      animation: pulseGreen 2s infinite;
+      top: 0;
+      left: 0;
+      opacity: 0.4;
+    }
+
+    .status-dot.offline {
+      background-color: var(--status-red);
+      box-shadow: 0 0 8px var(--status-red);
+    }
+
+    .status-dot.offline::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--status-red);
+      border-radius: 50%;
+      animation: pulseRed 1s infinite;
+      top: 0;
+      left: 0;
+      opacity: 0.4;
+    }
+
+    @keyframes pulseGreen {
+      0% { transform: scale(1); opacity: 0.4; }
+      70% { transform: scale(2.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 0; }
+    }
+
+    @keyframes pulseRed {
+      0% { transform: scale(1); opacity: 0.6; }
+      70% { transform: scale(2.2); opacity: 0; }
+      100% { transform: scale(1); opacity: 0; }
+    }
+
+    /* --- INTERACTIVE SIMULATION TOGGLE --- */
+    .sim-module {
+      max-width: 800px;
+      margin: 0 auto 40px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toggle-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 8px 20px;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .toggle-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+
+    .switch input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: .3s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px; width: 18px;
+      left: 4px; bottom: 4px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider { background-color: var(--status-red); }
+    input:checked + .slider:before { transform: translateX(24px); }
+
+    /* Outage Alert Banner (Hidden by default) */
+    .outage-banner {
+      width: 100%;
+      padding: 12px;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px dashed var(--status-red);
+      color: #fca5a5;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      text-align: center;
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- LAYOUT GRIDS & SECTIONS --- */
+    .features, .capabilities {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
-      padding: 60px 20px;
+      padding: 40px 20px;
       max-width: 1200px;
       margin: 0 auto;
     }
+
+    .features { padding-top: 40px; }
+    .capabilities { padding-bottom: 60px; }
 
     .feat-card {
       background: var(--card-bg);
@@ -149,9 +331,64 @@
       border-radius: 20px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .feat-card h3 { color: var(--accent); margin-top: 0; }
+
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-top: 60px;
+      margin-bottom: 10px;
+      letter-spacing: -1px;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--text-dim);
+      max-width: 600px;
+      margin: 0 auto 40px auto;
+      padding: 0 20px;
+      font-size: 1rem;
+    }
+
+    /* --- CLEAN TRUST LIST (NO TILES) --- */
+    .trust-list {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px 60px 20px;
+    }
+
+    .trust-row {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      gap: 20px;
+    }
+
+    .trust-row:last-child { margin-bottom: 0; }
+
+    .trust-text h4 {
+      margin: 0 0 5px 0;
+      font-size: 1.15rem;
+      color: var(--text-main);
+    }
+
+    .trust-text p {
+      margin: 0;
+      color: var(--text-dim);
+      font-size: 0.95rem;
+    }
+
+    .trust-icon-dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--accent);
+      border-radius: 50%;
+      margin-top: 10px;
+      flex-shrink: 0;
+    }
 
     /* --- MOBILE STYLES --- */
     @media (max-width: 768px) {
@@ -159,13 +396,12 @@
       
       .menu-toggle { display: flex; }
 
-      /* The Navigation Drawer */
       .nav-links {
         display: flex;
         flex-direction: column;
         width: 100%;
         position: absolute;
-        top: -450px; /* Hide above screen */
+        top: -450px;
         left: 0;
         transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         background: rgba(2, 6, 23, 0.98);
@@ -176,9 +412,7 @@
         z-index: 1999;
       }
 
-      .nav-links.active {
-        top: var(--nav-height); /* Slide into view */
-      }
+      .nav-links.active { top: var(--nav-height); }
 
       .nav-links a {
         margin: 20px 0;
@@ -187,14 +421,17 @@
         display: block;
       }
 
-      /* Hamburger to X Animation */
       .menu-toggle.is-active .bar:nth-child(2) { opacity: 0; }
       .menu-toggle.is-active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
       .menu-toggle.is-active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
       h1 { font-size: 2.5rem; }
-      header { padding-top: calc(var(--nav-height) + 40px); }
+      .section-title { font-size: 1.75rem; }
+      header { padding-top: calc(var(--nav-height) + 30px); }
       .btn-group { flex-direction: column; }
+      .status-container { flex-direction: column; align-items: flex-start; padding-left: 40px; }
+      .trust-row { flex-direction: column; gap: 5px; }
+      .trust-icon-dot { display: none; }
     }
   </style>
 </head>
@@ -222,9 +459,37 @@
     <p>Empowering 911 dispatchers with sub-second resource plan lookups. Built for reliability. Designed for the field.</p>
     <div class="btn-group">
       <a href="app/index.html" class="primary-btn">Agency Portal</a>
-      <a href="solutions.html" class="secondary-btn">Learn More</a>
+      <a href="demo.html" class="secondary-btn">Launch Demo</a>
     </div>
   </header>
+
+  <div class="status-container" id="status-container">
+    <div class="status-item">
+      <span class="status-dot online" id="dot-caching"></span>
+      <span>PWA Caching Core: <strong id="text-caching">Operational</strong></span>
+    </div>
+    <div class="status-item">
+      <span class="status-dot online" id="dot-sync"></span>
+      <span>Local Database Sync: <strong id="text-sync">Synchronized</strong></span>
+    </div>
+    <div class="status-item">
+      <span class="status-dot online" id="dot-hub"></span>
+      <span>Regional Broadcast Hub: <strong id="text-hub">Online</strong></span>
+    </div>
+  </div>
+
+  <div class="sim-module">
+    <div class="toggle-wrapper">
+      <span class="toggle-label">Simulate CAD / Network Outage</span>
+      <label class="switch">
+        <input type="checkbox" id="outage-toggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div class="outage-banner" id="outage-banner">
+      ⚠️ <strong>CRITICAL DATA LINK LOST:</strong> Primary network disconnected. Platform has seamlessly engaged local cache fallback. Lookups remain 100% operational.
+    </div>
+  </div>
 
   <section class="features">
     <div class="feat-card">
@@ -241,11 +506,60 @@
     </div>
   </section>
 
+  <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.05); max-width: 1200px; margin: 0 auto;">
+
+  <h2 class="section-title">Designed Behind the Headset</h2>
+  <p class="section-subtitle">Public safety infrastructure shouldn't be designed by people who have never run a radio channel. We build for the absolute realities of the comm center floor.</p>
+  
+  <div class="trust-list">
+    <div class="trust-row">
+      <div class="trust-icon-dot"></div>
+      <div class="trust-text">
+        <h4>High-Contrast Dark UI</h4>
+        <p>Engineered explicitly to eliminate severe eye strain during long night shifts in dimly lit dispatch centers, maintaining perfect legibility.</p>
+      </div>
+    </div>
+    <div class="trust-row">
+      <div class="trust-icon-dot"></div>
+      <div class="trust-text">
+        <h4>Keyboard-First Navigation</h4>
+        <p>Fumbling with a mouse slows down dispatch times. Our logic uses optimized hotkeys and command lines to match the muscle memory of a seasoned dispatcher.</p>
+      </div>
+    </div>
+    <div class="trust-row">
+      <div class="trust-icon-dot"></div>
+      <div class="trust-text">
+        <h4>Zero Visual Clutter</h4>
+        <p>When an incident escalates, cognitive load is high. The interface drops the noise and surfaces only what matters: clear determinants and exact response plans.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.05); max-width: 1200px; margin: 0 auto;">
+
+  <h2 class="section-title">Engineered for System Continuity</h2>
+  
+  <section class="capabilities">
+    <div class="feat-card">
+      <h3>Offline Response Lookups</h3>
+      <p>Instantaneous access to primary, secondary, and specialty tactical response plans even during complete CAD or network failures.</p>
+    </div>
+    <div class="feat-card">
+      <h3>Manual Status Boards</h3>
+      <p>Keep a clear visual grip on unit status, active incidents, and regional staging assignments via fluid, local tracking panels.</p>
+    </div>
+    <div class="feat-card">
+      <h3>Fail-Safe Notifications</h3>
+      <p>Built-in operational alerting mechanisms designed to keep regional command personnel and dispatch teams synchronized.</p>
+    </div>
+  </section>
+
   <footer style="text-align: center; padding: 60px 40px; color: #4b5563; font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05);">
     &copy; 2026 Outage Response. All rights reserved.<br>Built for the heroes behind the headset.
   </footer>
 
   <script>
+    // Navigation script
     const menu = document.querySelector('#mobile-menu');
     const menuLinks = document.querySelector('#nav-links');
 
@@ -254,12 +568,56 @@
       menuLinks.classList.toggle('active');
     });
 
-    // Close menu when a link is clicked
     document.querySelectorAll('.nav-links a').forEach(link => {
       link.addEventListener('click', () => {
         menu.classList.remove('is-active');
         menuLinks.classList.remove('active');
       });
+    });
+
+    // Interactive Outage Simulation Script
+    const toggle = document.querySelector('#outage-toggle');
+    const statusContainer = document.querySelector('#status-container');
+    const banner = document.querySelector('#outage-banner');
+    
+    const dotCaching = document.querySelector('#dot-caching');
+    const dotSync = document.querySelector('#dot-sync');
+    const dotHub = document.querySelector('#dot-hub');
+
+    const textCaching = document.querySelector('#text-caching');
+    const textSync = document.querySelector('#text-sync');
+    const textHub = document.querySelector('#text-hub');
+
+    toggle.addEventListener('change', function() {
+      if (this.checked) {
+        // Switch layout state to Offline
+        statusContainer.classList.add('offline-active');
+        banner.style.display = 'block';
+        
+        // PWA Caching remains working offline
+        dotCaching.className = 'status-dot online';
+        textCaching.textContent = 'Active (Offline Mode)';
+        
+        // Networked items fail
+        dotSync.className = 'status-dot offline';
+        textSync.textContent = 'Connection Lost';
+        
+        dotHub.className = 'status-dot offline';
+        textHub.textContent = 'Unavailable';
+      } else {
+        // Reset layout state to Online
+        statusContainer.classList.remove('offline-active');
+        banner.style.display = 'none';
+        
+        dotCaching.className = 'status-dot online';
+        textCaching.textContent = 'Operational';
+        
+        dotSync.className = 'status-dot online';
+        textSync.textContent = 'Synchronized';
+        
+        dotHub.className = 'status-dot online';
+        textHub.textContent = 'Online';
+      }
     });
   </script>
 

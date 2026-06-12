@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Outage Response | Interactive Demo Sandbox</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* --- INTEGRATED STYLE.CSS THEME VARIABLES --- */
+    :root {
+      --bg-gradient: radial-gradient(circle at top, #1f2937, #020617);
+      --card-bg: rgba(15, 23, 42, 0.9);
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --text-main: #f9fafb;
+      --text-dim: #9ca3af;
+      --input-bg: #0f172a;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --nav-height: 60px;
+      
+      /* Demo Specific Colors */
+      --status-green: #10b981;
+      --status-red: #ef4444;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: block; 
+    }
+
+    /* --- NAVIGATION OVERLAY --- */
+    nav.app-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 25px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-height);
+      z-index: 2000;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.5px;
+      background: linear-gradient(to right, #fff, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .back-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: #fff; }
+
+    /* --- INTERACTIVE DEMO CONTROL BANNER --- */
+    .demo-controls {
+      margin-top: calc(var(--nav-height) + 15px);
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 0 20px;
+    }
+
+    .control-card {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 12px;
+      padding: 15px 25px;
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .control-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .control-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+    }
+
+    .control-desc {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    /* Simulation Toggle Switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: .3s;
+      border-radius: 34px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px; width: 16px;
+      left: 4px; bottom: 4px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider { background-color: var(--status-red); box-shadow: 0 0 10px rgba(239, 68, 68, 0.4); }
+    input:checked + .slider:before { transform: translateX(24px); }
+
+    /* --- MAIN APP WORKSPACE SHELL --- */
+    .app-shell {
+      width: 100%;
+      max-width: 520px;
+      margin: 15px auto 20px auto;
+      padding: 0 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid var(--border-color);
+      margin-bottom: 20px;
+      transition: border 0.3s;
+    }
+
+    .card.outage-alert {
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      margin: 0 0 5px 0;
+      text-align: center;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+
+    /* --- APP DEMO STATUS NOTATIONS --- */
+    .sync-status-wrapper {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .sync-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      color: #64748b;
+      background: rgba(0,0,0,0.25);
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.3s;
+    }
+
+    .sync-badge.offline-mode {
+      color: #fca5a5;
+      background: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.2);
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--status-green);
+      box-shadow: 0 0 6px var(--status-green);
+    }
+
+    .badge-dot.offline-dot {
+      background-color: var(--status-red);
+      box-shadow: 0 0 6px var(--status-red);
+      animation: alertPulse 1s infinite;
+    }
+
+    @keyframes alertPulse {
+      0% { opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { opacity: 0.4; }
+    }
+
+    /* --- FORMS & SELECTION LABELS --- */
+    .input-instruction {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+      display: block;
+      padding-left: 2px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      background: var(--input-bg);
+      border: 1px solid #334155;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      outline: none;
+      transition: all 0.2s ease;
+      -webkit-appearance: none;
+    }
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    .primary-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .primary-btn:hover { background: var(--accent-hover); }
+
+    /* --- INTERACTIVE DROPDOWN LISTS --- */
+    .search-wrapper { position: relative; }
+    .autocomplete-container {
+      position: absolute;
+      top: 55px; left: 0; right: 0;
+      z-index: 1000;
+      background: #1e293b;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      max-height: 250px;
+      overflow-y: auto;
+      display: none;
+    }
+    .autocomplete-item {
+      padding: 12px 15px;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.9rem;
+      color: #cbd5e1;
+    }
+    .autocomplete-item:hover, .autocomplete-active {
+      background: #334155;
+      color: #fff;
+    }
+    .autocomplete-item strong { color: var(--accent); }
+
+    /* --- TACTICAL RESPONSE CARDS --- */
+    .result-item {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 20px;
+      border-radius: 14px;
+      margin-top: 20px;
+      border-top: 3px solid var(--accent);
+      animation: slideUp 0.3s ease-out;
+    }
+
+    .level-badge {
+      font-size: 0.7rem;
+      background: #374151;
+      padding: 3px 8px;
+      border-radius: 50%;
+      color: var(--text-dim);
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .determinant-title {
+      font-weight: 700;
+      margin: 10px 0;
+      font-size: 1.1rem;
+      color: #fff;
+    }
+
+    .agency-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      gap: 10px;
+    }
+    .agency-row:last-child { border-bottom: none; }
+    .agency-row strong {
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+    .agency-row span {
+      font-size: 0.9rem;
+      text-align: right;
+      color: #e5e7eb;
+    }
+
+    .logout-text {
+      display: block;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 25px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    /* --- EXPLANATORY INFORMATION SECTION --- */
+    .info-section {
+      width: 100%;
+      max-width: 520px;
+      margin: 40px auto 60px auto;
+      padding: 0 20px;
+    }
+
+    .info-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 25px;
+      text-align: center;
+      letter-spacing: -0.5px;
+      background: linear-gradient(to right, #fff, var(--text-dim));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 25px;
+      gap: 15px;
+    }
+
+    .info-row:last-child { margin-bottom: 0; }
+
+    .info-text h4 {
+      margin: 0 0 4px 0;
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .info-text p {
+      margin: 0;
+      color: var(--text-dim);
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    .info-dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--accent);
+      border-radius: 50%;
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- VIEWPORT ADAPTABILITY --- */
+    @media (max-width: 600px) {
+      nav.app-nav { padding: 0 15px; }
+      .app-shell { margin-top: 15px; }
+      .card { padding: 20px; }
+      .agency-row { flex-direction: column; gap: 4px; }
+      .agency-row span { text-align: left; width: 100%; }
+      .control-card { padding: 12px 15px; }
+      .control-desc { font-size: 0.7rem; }
+      .info-row { flex-direction: column; gap: 5px; }
+      .info-dot { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="app-nav">
+    <div class="logo">OutageResponse</div>
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6"/>
+      </svg>
+      Back to Website
+    </a>
+  </nav>
+
+  <div class="demo-controls">
+    <div class="control-card">
+      <div class="control-info">
+        <span class="control-title">Simulate CAD Failure</span>
+        <span class="control-desc" id="control-desc-text">Disconnect active dispatch link to evaluate cache fallback.</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="demo-outage-toggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="app-shell">
+    
+    <div id="login-section" class="card">
+      <h1>Agency Access Sandbox</h1>
+      <p style="text-align: center; color: #9ca3af; font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">
+        Use mock credential key <strong>adacounty</strong> or <strong>canyoncounty</strong> to simulate sync lookup.
+      </p>
+      
+      <span class="input-instruction">Agency Authentication Token</span>
+      <input type="text" id="agency-key" placeholder="e.g. adacounty" autocomplete="off" value="adacounty">
+      <button class="primary-btn" id="login-btn">Sync Agency Data</button>
+      
+      <div style="margin-top: 20px; font-size: 0.75rem; color: #4b5563; text-align: center;">
+        Secure Offline-First Sandbox Environment
+      </div>
+    </div>
+
+    <div id="app-section" style="display:none;">
+      <div class="card" id="main-app-card">
+        <h1 id="agency-name-display">Dispatch Portal</h1>
+        
+        <div class="sync-status-wrapper">
+          <span class="sync-badge" id="app-sync-badge">
+            <span class="badge-dot" id="app-badge-dot"></span>
+            <span id="app-sync-text">Live Server Link Active</span>
+          </span>
+        </div>
+        
+        <div class="search-wrapper">
+          <span class="input-instruction">Determinant Query Target</span>
+          <input type="text" id="search-input" placeholder="Type a code (e.g., 10A01, 09E01)" autocomplete="off">
+          <div id="autocomplete-list" class="autocomplete-container"></div>
+        </div>
+
+        <div id="active-result"></div>
+        
+        <span class="logout-text" onclick="logoutSandbox()">Exit Demo Terminal</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="info-section">
+    <h3 class="info-title">How Outage Continuity Works</h3>
+    
+    <div class="info-row">
+      <div class="info-dot"></div>
+      <div class="info-text">
+        <h4>1. Secure Data Ingestion</h4>
+        <p>We securely take your agency's run cards, emergency parameters, and jurisdictional response grids directly from spreadsheets or GIS data, transforming them into light, structured system profiles.</p>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-dot"></div>
+      <div class="info-text">
+        <h4>2. Local Caching Deployment</h4>
+        <p>Dispatchers download the platform onto their desktop consoles as a Progressive Web App (PWA). Once logged in, the application safely caches all mission-critical parameters directly into local, sandboxed storage.</p>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-dot"></div>
+      <div class="info-text">
+        <h4>3. Fail-Safe Outage Readiness</h4>
+        <p>When primary network links drop, vendor servers fail, or your CAD disconnects completely, the PWA stays live. Because data is processed entirely on the workstation floor, search and determinants remain completely active.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const MOCK_AGENCIES = [
+      { "key": "adacounty", "name": "Ada County Dispatch v26.6.11" },
+      { "key": "canyoncounty", "name": "Canyon County Dispatch v1.0" },
+      { "key": "gemstate", "name": "Gem State Response" }
+    ];
+
+    const MOCK_DATA = {
+      "adacounty": {
+        "theme": { "Boise Fire": "#ef4444", "Ada County Paramedics": "#3b82f6", "Kuna Fire": "#10b981" },
+        "plans": [
+          {
+            "determinant": "10A01",
+            "level": "Alpha",
+            "description": "Chest Pain - Single Episode",
+            "agencies": {
+              "Boise Fire": "Engine 1 (Staging Low)",
+              "Ada County Paramedics": "Medic 3 (Priority Response Code 2)"
+            }
+          },
+          {
+            "determinant": "09E01",
+            "level": "Echo",
+            "description": "Cardiac Arrest / Respiratory Failure",
+            "agencies": {
+              "Boise Fire": "Engine 1, Truck 2, Battalion 1",
+              "Ada County Paramedics": "Medic 3, Medic 11 (Priority Response Code 3)",
+              "Kuna Fire": "Engine 51 (Mutual Aid Hot-Cover)"
+            }
+          },
+          {
+            "determinant": "29B01",
+            "level": "Bravo",
+            "description": "Commercial Fire Alarm Activation",
+            "agencies": {
+              "Boise Fire": "Engine 1, Truck 2 (Investigation Plan)",
+              "Kuna Fire": "Battalion 5 (Notification Monitor)"
+            }
+          }
+        ]
+      },
+      "canyoncounty": {
+        "theme": { "Nampa Fire": "#f59e0b", "Canyon Paramedics": "#8b5cf6" },
+        "plans": [
+          {
+            "determinant": "10A01",
+            "level": "Alpha",
+            "description": "Chest Pain - Non-Traumatic Standard",
+            "agencies": {
+              "Nampa Fire": "Engine 21",
+              "Canyon Paramedics": "Medic 2"
+            }
+          },
+          {
+            "determinant": "09E01",
+            "level": "Echo",
+            "description": "Critical Cardiac Downtime Event",
+            "agencies": {
+              "Nampa Fire": "Engine 21, Squad 22, Battalion 2",
+              "Canyon Paramedics": "Medic 2, Medic 5"
+            }
+          }
+        ]
+      }
+    };
+
+    // UI DOM Element Cache
+    const loginSection = document.getElementById('login-section');
+    const appSection = document.getElementById('app-section');
+    const keyInput = document.getElementById('agency-key');
+    const loginBtn = document.getElementById('login-btn');
+    const searchInput = document.getElementById('search-input');
+    const autocompleteList = document.getElementById('autocomplete-list');
+    const activeResult = document.getElementById('active-result');
+    const agencyDisplay = document.getElementById('agency-name-display');
+    
+    const outageToggle = document.getElementById('demo-outage-toggle');
+    const mainAppCard = document.getElementById('main-app-card');
+    const appSyncBadge = document.getElementById('app-sync-badge');
+    const appBadgeDot = document.getElementById('app-badge-dot');
+    const appSyncText = document.getElementById('app-sync-text');
+    const controlDescText = document.getElementById('control-desc-text');
+
+    let currentAgencyData = null;
+    let currentAgencyName = "";
+    let mockSyncTime = "";
+    let isOfflineSimulationActive = false;
+    let currentFocus = -1;
+
+    // Trigger Login Setup
+    loginBtn.addEventListener('click', handleSandboxLogin);
+
+    function handleSandboxLogin() {
+      const key = keyInput.value.trim().toLowerCase();
+      if (!key) {
+        alert("Please select or type an operational sandbox key.");
+        return;
+      }
+
+      const agencyMatch = MOCK_AGENCIES.find(a => a.key === key);
+      if (!agencyMatch || !MOCK_DATA[key]) {
+        alert("Invalid Agency Key. Try entering 'adacounty' or 'canyoncounty'.");
+        return;
+      }
+
+      currentAgencyData = MOCK_DATA[key];
+      currentAgencyName = agencyMatch.name;
+      mockSyncTime = new Date().toLocaleString();
+
+      renderSandboxApp();
+    }
+
+    function renderSandboxApp() {
+      loginSection.style.display = 'none';
+      appSection.style.display = 'block';
+      agencyDisplay.innerText = currentAgencyName;
+      updateStatusUIElements();
+    }
+
+    // Dynamic Live vs Fallback Offline Status Updates
+    function updateStatusUIElements() {
+      if (!currentAgencyData) return;
+
+      if (isOfflineSimulationActive) {
+        mainAppCard.classList.add('outage-alert');
+        appSyncBadge.classList.add('offline-mode');
+        appBadgeDot.classList.add('offline-dot');
+        appSyncText.innerHTML = "PRIMARY LINK DROPPED - Local Cache Active";
+        
+        activeResult.innerHTML = `
+          <div style="text-align: center; margin-bottom: 20px; animation: fadeIn 0.3s;">
+            <span style="font-size: 0.72rem; color: #fca5a5; background: rgba(239,68,68,0.15); padding: 6px 14px; border-radius: 20px; border: 1px dashed rgba(239,68,68,0.3); display: block;">
+              ⚠️ CAD Server Offline. Local storage fallback rendering live responses.
+            </span>
+          </div>`;
+      } else {
+        mainAppCard.classList.remove('outage-alert');
+        appSyncBadge.classList.remove('offline-mode');
+        appBadgeDot.classList.remove('offline-dot');
+        appSyncText.innerText = "Live Server Link Active";
+        
+        activeResult.innerHTML = `
+          <div style="text-align: center; margin-bottom: 20px;">
+            <span style="font-size: 0.72rem; color: #64748b; background: rgba(0,0,0,0.2); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);">
+              Last Core Data Sync: ${mockSyncTime}
+            </span>
+          </div>`;
+      }
+      searchInput.value = "";
+    }
+
+    // Outage Simulation Controller Listener
+    outageToggle.addEventListener('change', function() {
+      isOfflineSimulationActive = this.checked;
+      if (isOfflineSimulationActive) {
+        controlDescText.innerHTML = "🛑 <strong>CAD Failure Active.</strong> Try searching determinants to test cache functionality.";
+        controlDescText.style.color = "#fca5a5";
+      } else {
+        controlDescText.innerText = "Disconnect active dispatch link to evaluate cache fallback.";
+        controlDescText.style.color = "var(--text-dim)";
+      }
+      
+      if (appSection.style.display === 'block') {
+        updateStatusUIElements();
+      }
+    });
+
+    // In-Line Filtering Logic Replicating app.js
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        const query = this.value.toUpperCase().trim();
+        closeAllLists();
+        if (!query) { 
+          updateStatusUIElements();
+          return; 
+        }
+        currentFocus = -1;
+
+        const matches = currentAgencyData.plans.filter(p => 
+          p.determinant.toUpperCase().startsWith(query)
+        ).slice(0, 10);
+
+        if (matches.length > 0) {
+          autocompleteList.style.display = 'block';
+        } else {
+          autocompleteList.style.display = 'none';
+        }
+
+        matches.forEach((item) => {
+          const div = document.createElement('div');
+          div.className = 'autocomplete-item';
+          div.innerHTML = `<strong>${item.determinant}</strong> - ${item.description}`;
+          div.addEventListener('click', () => selectSandboxCode(item));
+          autocompleteList.appendChild(div);
+        });
+      });
+
+      searchInput.addEventListener('keydown', function(e) {
+        let items = autocompleteList.getElementsByTagName('div');
+        if (e.keyCode == 40) { currentFocus++; addActive(items); } 
+        else if (e.keyCode == 38) { currentFocus--; addActive(items); } 
+        else if (e.keyCode == 13) { 
+          e.preventDefault();
+          if (currentFocus > -1 && items[currentFocus]) items[currentFocus].click();
+        }
+      });
+    }
+
+    function selectSandboxCode(item) {
+      searchInput.value = item.determinant;
+      closeAllLists();
+      
+      let rows = '';
+      for (const [name, res] of Object.entries(item.agencies)) {
+        const color = (currentAgencyData.theme && currentAgencyData.theme[name]) 
+                      ? currentAgencyData.theme[name] : '#3b82f6';
+        rows += `
+          <div class="agency-row">
+            <strong style="color:${color}">${name}</strong>
+            <span>${res}</span>
+          </div>`;
+      }
+
+      activeResult.innerHTML = `
+        <div class="result-item">
+          <span class="level-badge">${item.level}</span>
+          <div class="determinant-title">${item.determinant} - ${item.description}</div>
+          <div class="agency-list">${rows}</div>
+          <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
+            <span style="font-size: 0.65rem; color: #4b5563;">
+              ${isOfflineSimulationActive ? 'Offline Local Cache Performance Check: < 150ms' : 'Verified Data Connection Timestamp: ' + mockSyncTime}
+            </span>
+          </div>
+        </div>`;
+    }
+
+    // Global Key Helpers & List Controllers
+    function addActive(items) {
+      if (!items || items.length === 0) return false;
+      removeActive(items);
+      if (currentFocus >= items.length) currentFocus = 0;
+      if (currentFocus < 0) currentFocus = (items.length - 1);
+      items[currentFocus].classList.add("autocomplete-active");
+    }
+    function removeActive(items) {
+      for (let i = 0; i < items.length; i++) items[i].classList.remove("autocomplete-active");
+    }
+    function closeAllLists() { 
+      autocompleteList.innerHTML = ''; 
+      autocompleteList.style.display = 'none';
+    }
+    function logoutSandbox() {
+      currentAgencyData = null;
+      appSection.style.display = 'none';
+      loginSection.style.display = 'block';
+    }
+
+    document.addEventListener('click', (e) => {
+      if (e.target !== searchInput) closeAllLists();
+    });
+  </script>
+</body>
+</html>
