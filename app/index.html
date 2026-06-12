@@ -37,22 +37,32 @@
     </div>
 
     <div id="app-section" style="display:none;">
-      <div class="card">
+      <div class="card" id="main-app-card">
         <h1 id="agency-name-display">Dispatch Portal</h1>
         
+        <div class="sync-status-wrapper" style="text-align: center; margin-bottom: 20px;">
+          <span id="network-badge" class="sync-badge">
+              <span id="network-dot" class="badge-dot"></span>
+              <span id="network-text">Checking connection...</span>
+          </span>
+        </div>
+        <div id="sync-timestamp-note" style="text-align: center; margin-bottom: 20px; display: none;">
+            <span id="sync-time-text" style="font-size: 0.72rem; color: #64748b; background: rgba(0,0,0,0.2); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);">
+            </span>
+        </div>
+
         <div class="search-wrapper">
-          <input type="text" id="search-input" placeholder="Search Code (e.g. 10A01)" autocomplete="off">
+          <input type="text" id="search-input" placeholder="Search Code..." autocomplete="off">
           <div id="autocomplete-list" class="autocomplete-container"></div>
         </div>
 
         <div id="active-result"></div>
         
-        <span class="logout-text" onclick="logout()">Logout Agency</span>
+        <span class="logout-text" onclick="logout()">Logout & Clear Cache</span>
       </div>
     </div>
-
   </div>
-
+  
   <script src="app.js"></script>
 </body>
 </html>

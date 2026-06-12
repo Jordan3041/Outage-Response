@@ -1,6 +1,6 @@
 /**
  * OUTAGE RESPONSE - Master App Logic
- * Version: 2.2 (Enhanced Sync Tracking)
+ * Version: 2.3 (Integrated Real-Time Network Indicator)
  */
 
 const DATA_FOLDER = 'data/';
@@ -15,6 +15,10 @@ const autocompleteList = document.getElementById('autocomplete-list');
 const activeResult = document.getElementById('active-result');
 const agencyDisplay = document.getElementById('agency-name-display');
 
+// Status Indicator DOM Elements
+const syncTimeNote = document.getElementById('sync-timestamp-note');
+const syncTimeText = document.getElementById('sync-time-text');
+
 let currentAgencyData = null;
 let currentFocus = -1;
 
@@ -28,6 +32,10 @@ window.addEventListener('load', () => {
         currentAgencyData = JSON.parse(savedData);
         renderApp(savedName, savedTime);
     }
+
+    // Set up global connection monitors to update status dynamically
+    window.addEventListener('online', updateNetworkStatusIndicator);
+    window.addEventListener('offline', updateNetworkStatusIndicator);
 });
 
 // 2. LOGIN / SYNC HANDLER
@@ -55,10 +63,8 @@ async function handleLogin() {
         
         const data = await dataRes.json();
         
-        // Create a timestamp
         const syncTime = new Date().toLocaleString();
         
-        // Save to LocalStorage
         localStorage.setItem('dispatch_data', JSON.stringify(data));
         localStorage.setItem('agency_name', agencyMatch.name);
         localStorage.setItem('last_sync_time', syncTime);
@@ -72,19 +78,43 @@ async function handleLogin() {
     }
 }
 
-// 3. RENDER FUNCTION (Displays the sync note)
+// 3. RENDER FUNCTION
 function renderApp(name, syncTime) {
     loginSection.style.display = 'none';
     appSection.style.display = 'block';
     agencyDisplay.innerText = name;
 
-    // Display the last sync note at the bottom of the card or top of results
-    activeResult.innerHTML = `
-        <div style="text-align: center; margin-bottom: 20px;">
-            <span style="font-size: 0.75rem; color: #64748b; background: rgba(0,0,0,0.2); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);">
-                Last Data Sync: ${syncTime || 'Offline Mode'}
-            </span>
-        </div>`;
+    if(syncTime) {
+        syncTimeNote.style.display = 'block';
+        syncTimeText.innerText = `Last Data Sync: ${syncTime}`;
+    }
+        
+    // Immediately calculate state upon drawing terminal interface
+    updateNetworkStatusIndicator();
+}
+
+// NETWORK MONITOR LOGIC
+function updateNetworkStatusIndicator() {
+    const badge = document.getElementById('network-badge');
+    const dot = document.getElementById('network-dot');
+    const text = document.getElementById('network-text');
+    const appCard = document.getElementById('main-app-card');
+    
+    if (!badge || !dot || !text) return;
+
+    if (navigator.onLine) {
+        // Online Configuration
+        if (appCard) appCard.style.borderColor = 'var(--border-color)';
+        badge.className = 'sync-badge online-mode';
+        dot.className = 'badge-dot online-dot';
+        text.innerText = "Live Server Link Active";
+    } else {
+        // Offline Fallback Configuration
+        if (appCard) appCard.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+        badge.className = 'sync-badge offline-mode';
+        dot.className = 'badge-dot offline-dot';
+        text.innerHTML = "⚠️ PRIMARY LINK DROPPED - Local Cache Active";
+    }
 }
 
 // 4. AUTOCOMPLETE SEARCH LOGIC
@@ -93,9 +123,6 @@ if (searchInput) {
         const query = this.value.toUpperCase().trim();
         closeAllLists();
         if (!query) { 
-            // Return the sync note if search is cleared
-            const savedTime = localStorage.getItem('last_sync_time');
-            renderApp(localStorage.getItem('agency_name'), savedTime);
             return; 
         }
         currentFocus = -1;
@@ -118,10 +145,10 @@ if (searchInput) {
         if (e.keyCode == 40) { currentFocus++; addActive(items); } 
         else if (e.keyCode == 38) { currentFocus--; addActive(items); } 
         else if (e.keyCode == 13) { 
-            e.preventDefault();
-            if (currentFocus > -1 && items[currentFocus]) items[currentFocus].click();
+          e.preventDefault();
+          if (currentFocus > -1 && items[currentFocus]) items[currentFocus].click();
         }
-    });
+      });
 }
 
 // 5. SELECTION & DISPLAY
@@ -140,8 +167,8 @@ function selectCode(item) {
             </div>`;
     }
 
-    // Capture sync time for the footer of the result
     const savedTime = localStorage.getItem('last_sync_time');
+    const systemOfflineText = !navigator.onLine ? ' | Operating via Offline Fallback Cache' : '';
 
     activeResult.innerHTML = `
         <div class="result-item">
@@ -149,7 +176,7 @@ function selectCode(item) {
             <div class="determinant-title">${item.determinant} - ${item.description}</div>
             <div class="agency-list">${rows}</div>
             <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
-                <span style="font-size: 0.65rem; color: #4b5563;">Verified Data Sync: ${savedTime}</span>
+                <span style="font-size: 0.65rem; color: #4b5563;">Verified Data Sync: ${savedTime}${systemOfflineText}</span>
             </div>
         </div>`;
 }

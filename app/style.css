@@ -88,6 +88,7 @@ nav.app-nav {
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid var(--border-color);
   margin-bottom: 20px;
+  transition: border 0.3s;
 }
 
 h1 {
@@ -258,4 +259,62 @@ input:focus {
     text-align: left;
     width: 100%;
   }
+}
+
+/* --- COMPONENT: STATUS BADGE INDICATORS --- */
+.sync-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 5px 14px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sync-badge.online-mode {
+  color: #a7f3d0;
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.sync-badge.offline-mode {
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.badge-dot.online-dot {
+  background-color: #10b981;
+  box-shadow: 0 0 6px #10b981;
+}
+
+.badge-dot.offline-dot {
+  background-color: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+}
+
+.badge-dot.offline-dot::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background-color: #ef4444;
+  animation: badgePulse 1.5s infinite ease-in-out;
+}
+
+@keyframes badgePulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  70% { transform: scale(2.4); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
 }
