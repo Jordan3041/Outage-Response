@@ -6,41 +6,220 @@
   <title>Contact Us | Outage Response</title>
   <style>
     :root {
+      /* Matching index.html theme exactly */
       --bg-gradient: radial-gradient(circle at top, #1f2937, #020617);
-      --card-bg: rgba(15, 23, 42, 0.9);
+      --card-bg: rgba(15, 23, 42, 0.8);
       --accent: #3b82f6;
       --text-main: #f9fafb;
+      --text-dim: #9ca3af;
       --nav-height: 70px;
     }
 
     body {
-      margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg-gradient); background-attachment: fixed; color: var(--text-main);
-      min-height: 100vh; overflow-x: hidden;
+      margin: 0; 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg-gradient); 
+      background-attachment: fixed; 
+      color: var(--text-main);
+      min-height: 100vh; 
+      overflow-x: hidden;
+      line-height: 1.6;
     }
 
+    /* --- FIXED NAVBAR --- */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-height);
-      padding: 0 40px; display: flex; justify-content: space-between; align-items: center;
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 2000;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1); background: rgba(2, 6, 23, 0.8);
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      height: var(--nav-height);
+      padding: 0 40px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      backdrop-filter: blur(20px); 
+      -webkit-backdrop-filter: blur(20px); 
+      z-index: 2000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+      background: rgba(2, 6, 23, 0.8);
     }
 
     .logo {
-      font-size: 1.5rem; font-weight: 800; letter-spacing: -1px;
+      font-size: 1.5rem; 
+      font-weight: 800; 
+      letter-spacing: -1px;
       background: linear-gradient(to right, #fff, var(--accent));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none;
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent; 
+      text-decoration: none;
     }
 
-    .nav-links { display: flex; align-items: center; }
-    .nav-links a { color: #9ca3af; text-decoration: none; margin-left: 25px; font-size: 0.9rem; transition: color 0.3s; }
-    .menu-toggle { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
-    .bar { width: 25px; height: 3px; background-color: #fff; transition: 0.3s; border-radius: 2px; }
+    /* --- DESKTOP NAV --- */
+    .nav-links { 
+      display: flex; 
+      align-items: center; 
+    }
+    
+    .nav-links a { 
+      color: var(--text-dim); 
+      text-decoration: none; 
+      margin-left: 25px; 
+      font-size: 0.9rem; 
+      transition: color 0.3s; 
+    }
+    
+    .nav-links a:hover { 
+      color: #fff; 
+    }
+    
+    /* --- HAMBURGER MENU --- */
+    .menu-toggle { 
+      display: none; 
+      flex-direction: column; 
+      cursor: pointer; 
+      gap: 5px; 
+    }
+    
+    .bar { 
+      width: 25px; 
+      height: 3px; 
+      background-color: #fff; 
+      transition: all 0.3s ease; 
+      border-radius: 2px; 
+    }
 
-    .form-container { display: flex; justify-content: center; align-items: center; padding: calc(var(--nav-height) + 40px) 20px 40px 20px; }
-    .contact-card { background: var(--card-bg); width: 100%; max-width: 500px; padding: 35px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); }
-    input, textarea { width: 100%; padding: 12px; margin-bottom: 20px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: white; box-sizing: border-box; }
-    .submit-btn { width: 100%; padding: 14px; background: var(--accent); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+    /* Two-Column Layout */
+    .form-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: calc(var(--nav-height) + 60px) 20px 60px 20px;
+      min-height: calc(100vh - var(--nav-height));
+      box-sizing: border-box;
+    }
+
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      max-width: 1000px;
+      width: 100%;
+      align-items: center;
+    }
+
+    /* Left Column: Info */
+    .contact-info h1 {
+      font-size: 2.5rem;
+      margin-top: 0;
+      margin-bottom: 20px;
+      line-height: 1.1;
+      letter-spacing: -1px;
+    }
+    
+    .contact-info p {
+      font-size: 1.1rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .info-block {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #64748b;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .info-detail {
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+    
+    .info-detail a {
+      color: var(--text-main);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .info-detail a:hover {
+      color: var(--accent);
+    }
+
+    /* Right Column: Form */
+    .contact-card {
+      background: var(--card-bg);
+      padding: 40px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 14px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      color: white;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    select option {
+      background: #0f172a;
+      color: white;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+      transition: 0.2s;
+    }
+
+    .submit-btn:hover {
+      background: #2563eb;
+    }
+
+    .submit-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* --- MOBILE STYLES --- */
+    @media (max-width: 850px) {
+      .contact-wrapper { grid-template-columns: 1fr; gap: 40px; }
+      .contact-info { text-align: center; }
+      .info-block { align-items: center; }
+    }
 
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
@@ -48,13 +227,16 @@
       .nav-links {
         display: flex; flex-direction: column; width: 100%; position: absolute;
         top: -450px; left: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(25px); padding: 40px 0; text-align: center;
+        background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(25px); 
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding: 40px 0; 
+        text-align: center; z-index: 1999;
       }
       .nav-links.active { top: var(--nav-height); }
-      .nav-links a { margin: 20px 0; font-size: 1.4rem; margin-left: 0; }
+      .nav-links a { margin: 20px 0; font-size: 1.4rem; margin-left: 0; display: block; }
       .menu-toggle.is-active .bar:nth-child(2) { opacity: 0; }
       .menu-toggle.is-active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
       .menu-toggle.is-active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+      .contact-info h1 { font-size: 2.2rem; }
     }
   </style>
 </head>
@@ -62,7 +244,11 @@
 
   <nav>
     <a href="index.html" class="logo">OutageResponse</a>
-    <div class="menu-toggle" id="mobile-menu"><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>
+    <div class="menu-toggle" id="mobile-menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
     <div class="nav-links" id="nav-links">
       <a href="index.html">Home</a>
       <a href="solutions.html">Solutions</a>
@@ -72,23 +258,67 @@
   </nav>
 
   <div class="form-container">
-    <div class="contact-card">
-      <h2 style="text-align: center; margin-top: 0;">Contact Us</h2>
-      <form action="https://formspree.io/f/xlgovkqp" method="POST">
-        <input type="text" name="name" placeholder="Full Name" required>
-        <input type="email" name="_replyto" placeholder="Work Email" required>
-        <textarea name="message" rows="5" placeholder="How can we help?" required></textarea>
-        <button type="submit" class="submit-btn">Send Message</button>
-      </form>
+    <div class="contact-wrapper">
+      
+      <div class="contact-info">
+        <h1>We're here to help keep your operations running.</h1>
+        <p>Whether you need a demo of our offline-first response tools, technical support, or just have questions about our platform, our team is ready to assist your dispatch center.</p>
+        
+        <div class="info-block">
+          <span class="info-label">Direct Contact</span>
+          <span class="info-detail"><a href="mailto:jordanlavey@outageresponse.com">jordanlavey@outageresponse.com</a></span>
+        </div>
+        
+        <div class="info-block">
+          <span class="info-label">Business Hours</span>
+          <span class="info-detail">Mon - Fri, 9:00 AM - 5:00 PM (MDT)</span>
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <form action="https://formspree.io/f/xlgovkqp" method="POST">
+          <div class="form-group">
+            <input type="text" name="name" placeholder="Full Name" required>
+          </div>
+          <div class="form-group">
+            <input type="email" name="_replyto" placeholder="Work Email" required>
+          </div>
+          <div class="form-group">
+            <input type="text" name="agency" placeholder="Agency / Department Name" required>
+          </div>
+          <div class="form-group">
+            <select name="inquiry_type" required>
+              <option value="" disabled selected>Select Inquiry Type</option>
+              <option value="Demo Request">Demo Request</option>
+              <option value="Technical Support">Technical Support</option>
+              <option value="Pricing/Sales">Pricing & Sales</option>
+              <option value="General Inquiry">General Inquiry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <textarea name="message" rows="5" placeholder="How can we help your agency?" required></textarea>
+          </div>
+          <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+      </div>
+
     </div>
   </div>
 
   <script>
     const menu = document.querySelector('#mobile-menu');
     const menuLinks = document.querySelector('#nav-links');
+    
     menu.addEventListener('click', () => {
       menu.classList.toggle('is-active');
       menuLinks.classList.toggle('active');
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        menu.classList.remove('is-active');
+        menuLinks.classList.remove('active');
+      });
     });
   </script>
 </body>
