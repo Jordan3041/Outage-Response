@@ -22,7 +22,7 @@
 
   <div class="app-shell">
     
-    <div id="login-section" class="card">
+    <div id="login-section" class="card" style="max-width: 520px; margin: 0 auto;">
       <h1>Agency Access</h1>
       <p style="text-align: center; color: #9ca3af; font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">
         Enter your agency key to sync response plans.
@@ -47,17 +47,38 @@
           </span>
         </div>
         <div id="sync-timestamp-note" style="text-align: center; margin-bottom: 20px; display: none;">
-            <span id="sync-time-text" style="font-size: 0.72rem; color: #64748b; background: rgba(0,0,0,0.2); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);">
-            </span>
+            <span id="sync-time-text" style="font-size: 0.72rem; color: #64748b; background: rgba(0,0,0,0.2); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);"></span>
         </div>
 
         <div class="search-wrapper">
           <input type="text" id="search-input" placeholder="Search Code..." autocomplete="off">
           <div id="autocomplete-list" class="autocomplete-container"></div>
         </div>
-
         <div id="active-result"></div>
         
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 40px 0;">
+
+        <h2 style="text-align: center; margin-bottom: 30px; letter-spacing: -0.5px;">Local Status Board</h2>
+        
+        <div class="board-section-header">
+          <h3>Active Incidents</h3>
+          <div class="control-group">
+            <input type="text" id="new-inc-type" placeholder="Type (e.g., Fire)">
+            <input type="text" id="new-inc-loc" placeholder="Location">
+            <button onclick="addIncident()" class="primary-btn danger-btn">+ Create</button>
+          </div>
+        </div>
+        <div id="incident-grid" class="incident-grid"></div>
+
+        <div class="board-section-header" style="margin-top: 40px;">
+          <h3>Unit Roster</h3>
+          <div class="control-group">
+            <input type="text" id="new-unit-name" placeholder="Unit ID">
+            <button onclick="addUnit()" class="primary-btn">+ Add Unit</button>
+          </div>
+        </div>
+        <div id="unit-grid" class="unit-grid"></div>
+
         <span class="logout-text" onclick="logout()">Logout & Clear Cache</span>
       </div>
     </div>
